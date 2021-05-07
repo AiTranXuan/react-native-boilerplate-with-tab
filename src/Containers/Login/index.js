@@ -5,7 +5,11 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Login from './login'
-import { setLoggedInAction, setLoggedOutAction } from '@/Store/App/appSaga'
+import {
+  watchLogin,
+  setLoggedInAction,
+  setLoggedOutAction,
+} from '@/Store/App/appSaga'
 import { selectLoginStatus } from '@/Selectors/AppSelector'
 function mapStateToProps(state, ownProps) {
   return {
@@ -15,13 +19,16 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(
-      {
-        setLoggedInAction,
-        setLoggedOutAction,
-      },
-      dispatch,
-    ),
+    onLogin: () => {
+      dispatch(watchLogin())
+    },
+    // actions: bindActionCreators(
+    //   {
+    //     setLoggedInAction,
+    //     setLoggedOutAction,
+    //   },
+    //   dispatch,
+    // ),
   }
 }
 

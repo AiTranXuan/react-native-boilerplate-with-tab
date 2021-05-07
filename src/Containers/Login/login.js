@@ -1,17 +1,23 @@
+import { AppTypes } from '@/Constants'
+import { watchLogin } from '@/Store/App/appSaga'
 import Screens from '@/Theme/Screens'
 import React from 'react'
 import { Text, View, Button, TextInput } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 import { navigate, navigateAndSimpleReset } from '../../Navigators/Root'
 
 const LoginScreen = props => {
-  console.log('isLoggedIn: ', props.isLoggedIn)
+  const dispatch = useDispatch()
+
+  // console.log('isLoggedIn: ', props.isLoggedIn)
 
   const handleLogin = () => {
-    props.actions.setLoggedInAction()
+    dispatch({ type: AppTypes.LOGGED_IN })
     // navigateAndSimpleReset(Screens.Home.id)
   }
 
   const handleRegister = () => {
+    // dispatch({ type: AppTypes.LOGGED_OUT })
     navigate(Screens.Register.id)
   }
 

@@ -9,11 +9,14 @@ import { useTheme } from '@/Theme'
 import MainNavigator from '@/Navigators/Main'
 import AuthNavigator from '@/Navigators/Auth'
 import Screens from '@/Theme/Screens'
+import { selectLoginStatus } from '@/Selectors/AppSelector'
 
 const Stack = createStackNavigator()
 
 // @refresh reset
 const ApplicationNavigator = () => {
+  const isLoggedIn = useSelector(selectLoginStatus)
+  console.log('isLoggedIn ', isLoggedIn)
   const { Layout, darkMode, NavigationTheme } = useTheme()
   const { colors } = NavigationTheme
   const [isApplicationLoaded, setIsApplicationLoaded] = useState(true)
@@ -45,9 +48,18 @@ const ApplicationNavigator = () => {
       <NavigationContainer theme={NavigationTheme} ref={navigationRef}>
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
         <Stack.Navigator headerMode={'none'}>
-          {/* <FlowAuth /> */}
-          {/* <FlowMain /> */}
-          {
+          {isLoggedIn ? (
+            isApplicationLoaded &&
+            MainNavigator != null && (
+              <Stack.Screen
+                name={Screens.Main.id}
+                component={MainNavigator}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
+            )
+          ) : (
             <Stack.Screen
               name={Screens.Auth.id}
               component={AuthNavigator}
@@ -55,16 +67,7 @@ const ApplicationNavigator = () => {
                 animationEnabled: false,
               }}
             />
-          }
-          {/* {isApplicationLoaded && MainNavigator != null && (
-            <Stack.Screen
-              name={Screens.Main.id}
-              component={MainNavigator}
-              options={{
-                animationEnabled: false,
-              }}
-            />
-          )} */}
+          )}
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
